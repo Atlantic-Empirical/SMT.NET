@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B76A1EB3-41D7-4033-9815-741E6D95A924}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SMT</RootNamespace>
+    <AssemblyName>SMT.Common</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>SMT.Common.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>SMT.Common.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>SMT.Common.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>SMT.Common.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ModuleConfig, Version=1.0.2901.20702, Culture=neutral" />
+    <Reference Include="NvSharedLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bfda5bf98f71021e" />
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="src\Database\SQL.vb" />
+    <Compile Include="src\DotNet\AppConsole\AppConsole.vb" />
+    <Compile Include="src\Hardware\COM\EnumerateCOMPorts.vb" />
+    <Compile Include="src\DotNet\User Interface\Windows Forms\DataGrid.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="src\DotNet\Utility\cEndianBitConverter.vb" />
+    <Compile Include="src\DotNet\Utility\ConversionsAndSuch.vb" />
+    <Compile Include="src\DotNet\Exceptions\mExceptions.vb" />
+    <Compile Include="src\DotNet\Utility\Object_Pinning.vb" />
+    <Compile Include="src\DotNet\Reflection\Reflection_Classes.vb" />
+    <Compile Include="src\DotNet\Reflection\Reflection_Enums.vb" />
+    <Compile Include="src\DotNet\Reflection\Reflection_Utilities.vb" />
+    <Compile Include="src\Hardware\COM\232SerialCom.vb" />
+    <Compile Include="src\DotNet\Serialization\Serialization_Classes.vb" />
+    <Compile Include="src\DotNet\XML\mXMLValidator.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_FileNavigator.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_FileStream.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_FileSystem.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_Reader.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_SectorReader.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_StructureReader.vb" />
+    <Compile Include="src\FileSystems\ISO9660\ISO9660_Structures.vb" />
+    <Compile Include="src\IPProtection\SafeNet\Avacuno\cAvacunoDongle.vb" />
+    <Compile Include="src\IPProtection\SafeNet\cSafeNetDongle.vb" />
+    <Compile Include="src\IPProtection\SafeNet\Phoenix\cPhoenixDongle2.vb" />
+    <Compile Include="src\IPProtection\SafeNet\SecureUpdate.vb" />
+    <Compile Include="src\IPProtection\SafeNet\SecureUpdateNativeAPI.vb" />
+    <Compile Include="src\IPProtection\SafeNet\SentinelKey.vb" />
+    <Compile Include="src\IPProtection\SafeNet\SentinelKeyNativeApi.vb" />
+    <Compile Include="src\IPProtection\SafeNet\Weld\cWeldDongle.vb" />
+    <Compile Include="src\Multimedia\Common\Classes.vb" />
+    <Compile Include="src\Multimedia\Common\Enums.vb" />
+    <Compile Include="src\Multimedia\Common\Modules.vb" />
+    <Compile Include="src\Multimedia\Filters\BlackMagic\IDecklinkIOControl.vb" />
+    <Compile Include="src\Multimedia\Filters\BlackMagic\IDecklinkRawDeviceControl.vb" />
+    <Compile Include="src\Multimedia\Filters\BlackMagic\mDecklinkInstallationTester.vb" />
+    <Compile Include="src\Multimedia\Filters\MainConcept\IModuleConfig.vb" />
+    <Compile Include="src\Multimedia\Filters\MainConcept\mMainConcept_Scaler.vb" />
+    <Compile Include="src\Multimedia\Filters\MainConcept\ModuleConfig_Consts.vb" />
+    <Compile Include="src\Multimedia\DirectShow\AVI.vb" />
+    <Compile Include="src\Multimedia\DirectShow\BugWA.vb" />
+    <Compile Include="src\Multimedia\DirectShow\Control.vb" />
+    <Compile Include="src\Multimedia\DirectShow\Core.vb" />
+    <Compile Include="src\Multimedia\DirectShow\Device.vb" />
+    <Compile Include="src\Multimedia\DirectShow\DVD.vb" />
+    <Compile Include="src\Multimedia\DirectShow\DVDMedia.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Deinterlacer\IDeinterlacer.vb" />
+    <Compile Include="src\Multimedia\Hardware\Blackmagic\DeviceDetection.vb" />
+    <Compile Include="src\Multimedia\Players\DVD\mDVDDataTypeConversions.vb" />
+    <Compile Include="src\Multimedia\DirectShow\Extend.vb" />
+    <Compile Include="src\Multimedia\DirectShow\IDMOWrapperFilter.vb" />
+    <Compile Include="src\Multimedia\DirectShow\Line21.vb" />
+    <Compile Include="src\Multimedia\DirectShow\MixerPinConfig.vb" />
+    <Compile Include="src\Multimedia\DirectShow\OtherInterfaces.vb" />
+    <Compile Include="src\Multimedia\DirectShow\QEdit.vb" />
+    <Compile Include="src\Multimedia\DirectShow\Utils.vb" />
+    <Compile Include="src\Multimedia\DirectShow\UUIDs.vb" />
+    <Compile Include="src\Multimedia\DirectShow\VMR9.vb" />
+    <Compile Include="src\Multimedia\Filters\nVidia\nvCommon.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\AMTC\IAMTC.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\JacketPictureConverter\IKeystone_JPC.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_FrameSplitter\IKeystoneMixer_FS.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_FrameSplitter\IKeystoneProcAmp_FS.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_FrameSplitter\IKeystoneQuality_FS.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_FrameSplitter\IKeystone_FS.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_OMNI\IKeystoneMixer_OMNI.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_OMNI\IKeystoneProcAmp_OMNI.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_OMNI\IKeystoneQuality_OMNI.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Keystone_OMNI\IKeystone_OMNI.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\Shared\KeystoneShared.vb" />
+    <Compile Include="src\Multimedia\Filters\SMT\L21G\IL21G.vb" />
+    <Compile Include="src\Multimedia\GraphConstruction\cSMTForm.vb" />
+    <Compile Include="src\Multimedia\GraphConstruction\cSMTGraph.vb" />
+    <Compile Include="src\Multimedia\GraphConstruction\FilterInstallationVerification.vb" />
+    <Compile Include="src\Multimedia\Players\AVC\cAVCPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\AVI\cAVIPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\BasePlayer\cBasePlayer.vb" />
+    <Compile Include="src\Multimedia\Players\DTSAC3\cDTSAC3Player.vb" />
+    <Compile Include="src\Multimedia\Players\DVD\cDVDPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\DVD\HelperCode.vb" />
+    <Compile Include="src\Multimedia\Players\FrameSplitting\cFrameSplitterBase.vb" />
+    <Compile Include="src\Multimedia\Players\FrameSplitting\cFrameSplittingPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\JacketPicture\cJacketPicturePlayer_HD.vb" />
+    <Compile Include="src\Multimedia\Players\JacketPicture\cJacketPicturePlayer_SD.vb" />
+    <Compile Include="src\Multimedia\Players\M2TS\cM2TSPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\MPA\cMPAPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\MPEG1\cMPEG1Player.vb" />
+    <Compile Include="src\Multimedia\Players\MPEG2_HD\cHDMPEG2Player.vb" />
+    <Compile Include="src\Multimedia\Players\MPEG2_SD\cSDMPEG2Player.vb" />
+    <Compile Include="src\Multimedia\Players\MPG\cMPGPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\MOV\cPacTVPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\PCMWAV\cPCMWAVPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\VC1\cVC1Player_MC.vb" />
+    <Compile Include="src\Multimedia\Players\VC1\cVC1Player_MS.vb" />
+    <Compile Include="src\Multimedia\Players\VOB\cVOBPlayer.vb" />
+    <Compile Include="src\Multimedia\Players\YUV\cYUVPlayer.vb" />
+    <Compile Include="src\Multimedia\Formats\AC3\AC3.vb" />
+    <Compile Include="src\Multimedia\Formats\DDP\DDPReader.vb" />
+    <Compile Include="src\Multimedia\Formats\DTS\DTS.vb" />
+    <Compile Include="src\Multimedia\Formats\DVD\Globalization\DVDGlobalization.vb" />
+    <Compile Include="src\Multimedia\Formats\DVD\IFO.vb" />
+    <Compile Include="src\Multimedia\Hardware\IOCTL\IOCTL.vb" />
+    <Compile Include="src\Multimedia\Formats\Line 21\Line21.vb" />
+    <Compile Include="src\Multimedia\Formats\DVD\VOB.vb" />
+    <Compile Include="src\Multimedia\Formats\MPEG2\MPEG2.vb" />
+    <Compile Include="src\Multimedia\Formats\MPEG2\mSonyM2VProcessing.vb" />
+    <Compile Include="src\Multimedia\Formats\RLE\RLE.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\BitmapEditor_Functions.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\CSC.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\DIBToImage.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\ImageHandling.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\mImageFlipping.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\mImageScaling.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\mImageText.vb" />
+    <Compile Include="src\Multimedia\Formats\StillImage\mImageUtilties.vb" />
+    <Compile Include="src\Multimedia\Mounting\MountableMedia_Base.vb" />
+    <Compile Include="src\Multimedia\Mounting\MountableMedia_DVD.vb" />
+    <Compile Include="src\Multimedia\UI\WinForms\Viewer\Viewer_Form.Designer.vb">
+      <DependentUpon>Viewer_Form.vb</DependentUpon>
+    </Compile>
+    <Compile Include="src\Multimedia\UI\WinForms\Viewer\Viewer_Form.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Multimedia\UI\WPF\Dialogs\PTS_Dialog.xaml.vb">
+      <DependentUpon>PTS_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="src\Multimedia\UI\WPF\Viewer\cVideoWindow.vb" />
+    <Compile Include="src\Multimedia\UI\WPF\Viewer\ViewerWindow.xaml.vb">
+      <DependentUpon>ViewerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="src\Multimedia\Utility\mNTCSColor.vb" />
+    <Compile Include="src\Multimedia\Utility\Timecode\Timecode_Module.vb" />
+    <Compile Include="src\Multimedia\Utility\Timecode\Timecode_Classes.vb" />
+    <Compile Include="src\Multimedia\Utility\Timecode\Timecode_Consts.vb" />
+    <Compile Include="src\Multimedia\Utility\Timecode\Timecode_Enums.vb" />
+    <Compile Include="src\Multimedia\Utility\Timecode\Timecode_Exceptions.vb" />
+    <Compile Include="src\Network\Email\Email_Class.vb" />
+    <Compile Include="src\Network\Sockets\Sockets.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="src\Win\COM\COM.vb" />
+    <Compile Include="src\Win\COM\COMInterfaces.vb" />
+    <Compile Include="src\Win\COM\Persist.vb" />
+    <Compile Include="src\Win\DiscTray.vb" />
+    <Compile Include="src\Win\DriveMapping.vb" />
+    <Compile Include="src\Win\EventLog.vb" />
+    <Compile Include="src\Win\ExtensionMapping.vb" />
+    <Compile Include="src\Win\FileSystem.vb" />
+    <Compile Include="src\Win\Globalization.vb" />
+    <Compile Include="src\Win\KeyboardHook.vb" />
+    <Compile Include="src\Win\OSVersion.vb" />
+    <Compile Include="src\Win\Printing.vb" />
+    <Compile Include="src\Win\ProcessExecution\cProcessManager.vb" />
+    <Compile Include="src\Win\ProcessExecution\Process_Utilities.vb" />
+    <Compile Include="src\Win\ProcessExecution\RunningInstanceCheck.vb" />
+    <Compile Include="src\Win\Registry.vb" />
+    <Compile Include="src\Win\SystemInfo.vb" />
+    <Compile Include="src\Win\UserAccounts.vb" />
+    <Compile Include="src\Win\UserInterface.vb" />
+    <Compile Include="src\Win\WinAPI\Constants.vb" />
+    <Compile Include="src\Win\WinAPI\Shlwapi.vb" />
+    <Compile Include="src\Win\WinAPI\Ole32.vb" />
+    <Compile Include="src\Win\WinAPI\Kernel32.vb" />
+    <Compile Include="src\Win\WinAPI\Mpr.vb" />
+    <Compile Include="src\Win\WinAPI\User32.vb" />
+    <Compile Include="src\Win\WinAPI\WinMM.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Network\Sockets\Sockets.resx">
+      <DependentUpon>Sockets.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="src\Multimedia\Formats\DVD\Globalization\Countries.csv" />
+    <EmbeddedResource Include="src\Multimedia\Formats\DVD\Globalization\Languages.csv" />
+    <EmbeddedResource Include="src\Multimedia\UI\WinForms\Viewer\Viewer_Form.resx">
+      <DependentUpon>Viewer_Form.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\3pDrivers\ModuleConfig.dll" />
+    <Content Include="Resources\3pDrivers\NvSharedLib.dll" />
+    <Content Include="Resources\3pDrivers\SecureUpdate.dll" />
+    <Content Include="Resources\3pDrivers\SentinelKeyW.DLL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="src\Multimedia\UI\WPF\Dialogs\PTS_Dialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="src\Multimedia\UI\WPF\Viewer\ViewerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SMT.Multimedia.Resources\SMT.Multimedia.Resources.vbproj">
+      <Project>{922F7F84-9FF7-4329-BFA1-A823B2639206}</Project>
+      <Name>SMT.Multimedia.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Network\FTP\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,13 @@
+﻿<Window x:Class="Multimedia.UI.WPF.Dialogs.PTS_Dialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Adjust PTS Values" Height="130" Width="249" ShowInTaskbar="False" WindowStyle="ToolWindow" SnapsToDevicePixels="True" Topmost="True" WindowStartupLocation="CenterOwner" Name="PTS_Dialog">
+    <Canvas x:Name="cvLayoutRoot">
+        <Label Name="Label1" HorizontalAlignment="Left" Width="68.931" Height="25.974" Canvas.Left="18.315" Canvas.Top="3.996">Start PTS =</Label>
+        <Label Height="28" HorizontalAlignment="Left" Name="Label2" VerticalAlignment="Top" Width="68.931" Canvas.Left="23.31" Canvas.Top="30">End PTS =</Label>
+        <TextBox Height="23" Name="txtEndPTS" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Canvas.Left="87" Canvas.Top="32" TabIndex="1" />
+        <TextBox Height="23" Name="txtStartPTS" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Canvas.Left="87" Canvas.Top="7" TabIndex="0" />
+        <Button  Name="btnCancel" HorizontalAlignment="Left" Width="75" Height="22" Canvas.Left="132" Canvas.Top="61" TabIndex="3">Cancel</Button>
+        <Button Name="btnOK" HorizontalAlignment="Left" Width="75" Height="22" Canvas.Left="51" Canvas.Top="61" IsDefault="False" TabIndex="2">OK</Button>
+    </Canvas>
+</Window>

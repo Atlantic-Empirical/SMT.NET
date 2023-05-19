@@ -1,0 +1,899 @@
+Imports System
+Imports System.Runtime.InteropServices
+
+Namespace Multimedia.Filters.nVidia
+
+    Public Class nvcommon
+
+#Region "Main"
+
+        'Registry controlled config and debug state
+        <StructLayout(LayoutKind.Sequential)> _
+        Public Structure nvdecConfig
+            Public value As Integer
+            Public defaultvalue As Integer
+            '	//MATTIAS - what does the * mean in the next line in the h file?
+            '	//THOMAS - It meas it's a pointer to a char, representing a string.
+            '	// So it's probably better to declare it as
+            '	//public string name;
+            '	// or possibly
+            '	//public IntPtr name
+            '	// depending on how it's going to be used.
+            Public name As Char
+        End Structure
+
+        <StructLayout(LayoutKind.Sequential)> _
+        Public Structure NVPRODUCTS
+            Public ID As Char()
+            Public options As Integer
+        End Structure
+
+#End Region 'Main
+
+#Region "NVOPTION"
+
+        <Flags()> _
+         Public Enum ENvProductOption
+            NVOPTION_DOLBY_STEREO = 1
+            NVOPTION_DOLBY_4CHANNEL = 2
+            NVOPTION_DOLBY_6CHANNEL = 4
+            NVOPTION_DOLBY_PROLOGIC = 8
+            NVOPTION_DOLBY_PROLOGIC2 = 16
+            NVOPTION_DOLBY_HEADPHONES = 32
+            NVOPTION_DOLBY_SPEAKERS = 64
+            NVOPTION_DTS = 256
+            NVOPTION_NETWORK_SUPPORT = 2048
+            NVOPTION_CAPTURE_SUPPORT = 4096
+            NVOPTION_PVR_SERVER = 8192
+            NVOPTION_PVR_CLIENT = 16384
+            NVOPTION_GEMSTAR = 32768
+            NVOPTION_PRODUCT_TRIAL = 65536
+            NVOPTION_PRODUCT_UPGRADE_OEM = 131072
+            NVOPTION_PRODUCT_UPGRADE_TRIAL = 262144
+            NVOPTION_LOCK_OEM_TO_APP = 16777216
+            NVOPTION_LOCK_OEM_TO_HARDWARE = 33554432
+        End Enum
+
+#End Region 'NVOPTION
+
+#Region "NVPRODUCT"
+
+        <Flags()> _
+        Public Enum ENvProdctLevel
+            NV_PRODUCT_LEVEL_TRIAL
+            NV_PRODUCT_LEVEL_OEM
+            NV_PRODUCT_LEVEL_STANDARD
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvProductOem
+            NV_PRODUCT_OEM_OTHER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvProductOemApp
+            NV_PRODUCT_OEM_APP_DOLBY
+            NV_PRODUCT_OEM_APP_SHOWSHIFTER
+            NV_PRODUCT_OEM_APP_NUM
+        End Enum
+
+#End Region 'NVPRODUCT
+
+#Region "Video Decoder Control"
+
+        <Flags()> _
+         Public Enum ENvErrorCodes
+            NVVIDDEC_OK = 0
+            NVVIDDEC_NOT_SUPPORTED = 1
+            NVVIDDEC_NOT_CONNECTED = 2
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvVideoDecoderProps
+            NVVIDDEC_STATS = 0
+            NVVIDDEC_DEBUG
+            NVVIDDEC_CONFIG
+            NVVIDDEC_CONTROL
+        End Enum
+
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_NV31 As Integer = 0
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_NV31A As Integer = 1
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_NV17 As Integer = 2
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_NV17A As Integer = 3
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_B As Integer = 4
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_D As Integer = 5
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_A As Integer = 6
+        Public Const NVVIDDEC_OUTPUT_DXVA_MPEG2_C As Integer = 7
+        Public Const NVVIDDEC_OUTPUT_SW_YUY2 As Integer = 8
+        Public Const NVVIDDEC_OUTPUT_SW_UYVY As Integer = 9
+        Public Const NVVIDDEC_OUTPUT_NUM_ALL_TYPES As Integer = 10
+        Public Const NVVIDDEC_OUTPUT_SW_OFFSET As Integer = 8
+        Public Const NVVIDDEC_MFT_OUTPUT_SW_NV12 As Integer = 0
+        Public Const NVVIDDEC_MFT_OUTPUT_SW_YUY2 As Integer = 1
+        Public Const NVVIDDEC_MFT_OUTPUT_SW_UYVY As Integer = 2
+        Public Const NVVIDDEC_MFT_OUTPUT_NUM_ALL_TYPES As Integer = 3
+        Public Const NVVIDDEC_INPUT_MPEG1 As Integer = 0
+        Public Const NVVIDDEC_INPUT_MPEG2 As Integer = 1
+        Public Const NVVIDDEC_SP_OUTPUT_ARGB4444 As Integer = 0
+        Public Const NVVIDDEC_SP_OUTPUT_ARGB32 As Integer = 1
+        Public Const NVVIDDEC_SP_OUTPUT_IA44 As Integer = 2
+        Public Const NVVIDDEC_SP_OUTPUT_AI44 As Integer = 3
+        Public Const NVVIDDEC_SP_OUTPUT_AYUV As Integer = 4
+        Public Const NVVIDDEC_SP_OUTPUT_TOTAL As Integer = 5
+        Public Const NVVIDDEC_SOURCE_NONE As Integer = 0
+        Public Const NVVIDDEC_SOURCE_SPLITTER As Integer = 1
+        Public Const NVVIDDEC_SOURCE_NAVIGATOR As Integer = 2
+        Public Const NVVIDDEC_SOURCE_TRANSPORT As Integer = 3
+        Public Const NVVIDDEC_RENDERER_NONE As Integer = 0
+        Public Const NVVIDDEC_RENDERER_OVERLAY_MIXER As Integer = 1
+        Public Const NVVIDDEC_RENDERER_VMR As Integer = 2
+        Public Const NVVIDDEC_RENDERER_VMR9 As Integer = 3
+        Public Const NVVIDDEC_RENDERER_ASF_WRITER As Integer = 4
+        Public Const NVVIDDEC_RENDERER_NV_VPP As Integer = 5
+        Public Const NVVIDDEC_RENDERER_UNDEFINED As Integer = 6
+        Public Const NVVIDDEC_LINE21_NONE As Integer = 0
+        Public Const NVVIDDEC_LINE21_VERSION1 As Integer = 1
+        Public Const NVVIDDEC_LINE21_VERSION2 As Integer = 2
+        Public Const NVVIDDEC_CAN_SPAD As Integer = 1
+        Public Const NVVIDDEC_CAN_TEMPORAL As Integer = 2
+        Public Const NVVIDDEC_CAN_FILTERED_WEAVE As Integer = 4
+        Public Const NVVIDDEC_CAN_BOB As Integer = 8
+        Public Const NVVIDDEC_SINGLE As Integer = 0
+        Public Const NVVIDDEC_DUALVIEW As Integer = 1
+        Public Const NVVIDDEC_SPAN_MODE As Integer = 2
+        Public Const NVVIDDEC_CLONE_MODE As Integer = 3
+        Public Const NVVIDDEC_BRIGHTNESS As Integer = 1
+        Public Const NVVIDDEC_CONTRAST As Integer = 2
+        Public Const NVVIDDEC_HUE As Integer = 4
+        Public Const NVVIDDEC_SATURATION As Integer = 8
+        Public Const NVVIDDEC_GAMMA As Integer = 16
+        Public Const NVVIDDEC_RENDERER_NONE_INSTALLED As Integer = 0
+        Public Const NVVIDDEC_RENDERER_VMR7_INSTALLED As Integer = 1
+        Public Const NVVIDDEC_RENDERER_VMR9_INSTALLED As Integer = 2
+
+        <Flags()> _
+        Public Enum ENvVideoDecoderProps_StatsTypeIndexes
+            NVVIDDEC_STATS_INPUT_TYPE = 0
+            NVVIDDEC_STATS_OUTPUT_TYPE
+            NVVIDDEC_STATS_WIDTH
+            NVVIDDEC_STATS_HEIGHT
+            NVVIDDEC_STATS_DISPLAY_RATE
+            NVVIDDEC_STATS_ENCRYPTED
+            NVVIDDEC_STATS_FPS
+            NVVIDDEC_STATS_FRAMES
+            NVVIDDEC_STATS_FRAME_TYPE
+            NVVIDDEC_STATS_FRAME_DROPS
+            NVVIDDEC_STATS_PECT_RATIO
+            NVVIDDEC_STATS_PROGRESSIVE
+            NVVIDDEC_STATS_BITRATE
+            NVVIDDEC_STATS_RENDERER_FILTER
+            NVVIDDEC_STATS_SOURCE_FILTER
+            NVVIDDEC_STATS_LINE21_FILTER
+            NVVIDDEC_STATS_SP_COUNT
+            NVVIDDEC_STATS_SP_CONNECTION
+            NVVIDDEC_STATS_SP_FORMAT
+            NVVIDDEC_STATS_DXVA_CONFIG
+            NVVIDDEC_STATS_DXVA_SP_FORMAT
+            NVVIDDEC_STATS_DXVA_SP_BLEND
+            NVVIDDEC_STATS_VIDEO_BUFFERS
+            NVVIDDEC_STATS_SP_BUFFERS
+            NVVIDDEC_STATS_FRAME_STRUCTURE
+            NVVIDDEC_STATS_IN_VIDEO_DECODE
+            NVVIDDEC_STATS_DEINTERLACE_MODES
+            NVVIDDEC_STATS_LANGUAGE_MODULE
+            NVVIDDEC_STATS_NUMBER_VMR_DEINTERLACE_MODES
+            NVVIDDEC_STATS_VMR_DEINTERLACE_TECHNOLOGY
+            NVVIDDEC_STATS_COLOR_CONTROLS
+            NVVIDDEC_STATS_VMR_INSTALLED
+            NVVIDDEC_STATS_NVIDIA_INSTALLED
+            NVVIDDEC_STATS_PRODUCT_OPTIONS
+            NVVIDDEC_STATS_BYTERATE
+            NVVIDDEC_STATS_LT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_STATS_SP_CONNECTION
+            NVVIDDEC_STATS_ENUM_SP_NONE = 0
+            NVVIDDEC_STATS_ENUM_SP_BLENDED
+            NVVIDDEC_STATS_ENUM_SP_VMR
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaVideoDecoderProps_GetBufferIndexes
+            NVVIDDEC_BUFFER_FRAME_CAPTURE = 0
+        End Enum
+
+        <StructLayout(LayoutKind.Sequential)> _
+        Public Structure nvviddecFrameCapture
+            Public Status As System.UInt32
+            Public Width As System.UInt32
+            Public Height As System.UInt32
+            Public AspectX As System.UInt32
+            Public AspectY As System.UInt32
+            Public pbData As System.UInt32
+        End Structure
+
+        <Flags()> _
+        Public Enum ENvidiaVideoDecoderProps_DebugTypeIndexes
+            NVVIDDEC_DEBUG_TIMING = 0
+            NVVIDDEC_DEBUG_TRACE
+            NVVIDDEC_DEBUG_MEMORY
+            NVVIDDEC_DEBUG_LOCKING
+            NVVIDDEC_DEBUG_ERROR
+            NVVIDDEC_DEBUG_CUSTOM1
+            NVVIDDEC_DEBUG_CUSTOM2
+            NVVIDDEC_DEBUG_CUSTOM3
+            NVVIDDEC_DEBUG_VIDDEC
+            NVVIDDEC_DEBUG_SPDEC
+            NVVIDDEC_DEBUG_MPGVDEC
+            NVVIDDEC_DEBUG_DVDSPDEC
+            NVVIDDEC_DEBUG_L21DEC
+            NVVIDDEC_DEBUG_DXVA
+            NVVIDDEC_DEBUG_LT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_CONFIG_VIDEO_MODETypes
+            NVVIDDEC_CONFIG_IBP_VIDEO_MODE = 0
+            NVVIDDEC_CONFIG_IP_VIDEO_MODE
+            NVVIDDEC_CONFIG_I_VIDEO_MODE
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_CONFIG_DISPLAY_TYPE
+            NVVIDDEC_CONFIG_DISPLAY_AUTO = 0
+            NVVIDDEC_CONFIG_DISPLAY_4X3LB
+            NVVIDDEC_CONFIG_DISPLAY_4X3PS
+            NVVIDDEC_CONFIG_DISPLAY_ANAMORPHIC
+            NVVIDDEC_CONFIG_DISPLAY_3X2
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_CONFIG_DEINTERLACE_MODE
+            NVVIDDEC_CONFIG_DEINTERLACE_NORMAL = 0
+            NVVIDDEC_CONFIG_DEINTERLACE_BOB
+            NVVIDDEC_CONFIG_DEINTERLACE_WEAVE
+            NVVIDDEC_CONFIG_DEINTERLACE_FILTERED_WEAVE
+            NVVIDDEC_CONFIG_DEINTERLACE_SPAD
+            NVVIDDEC_CONFIG_DEINTERLACE_SPECIFIC_VMR
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_CONFIG_DEINTERLACE_MODE_CTRL
+            NVVIDDEC_CONFIG_DEINTERLACE_CTRL_AUTO = 0
+            NVVIDDEC_CONFIG_DEINTERLACE_CTRL_FILM
+            NVVIDDEC_CONFIG_DEINTERLACE_CTRL_VIDEO
+            NVVIDDEC_CONFIG_DEINTERLACE_CTRL_SMART
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_CONFIG_SPAD_MODE
+            NVVIDDEC_CONFIG_SPAD_GREEN_WEAVE = 1
+            NVVIDDEC_CONFIG_SPAD_NO_HIGH_FREQ = 2
+            NVVIDDEC_CONFIG_SPAD_BACKEND_DISABLE = 4
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVVIDDEC_CONFIG_ENABLE_VMR
+            NVVIDDEC_CONFIG_DISABLE_VMR = 0
+            NVVIDDEC_CONFIG_ENABLE_VMR7 = 1
+            NVVIDDEC_CONFIG_ENABLE_VMR9 = 2
+        End Enum
+
+        Public Const NVVIDDEC_CONFIG_BITS_SP_ARGB4444 As Integer = (1 << 0)
+        Public Const NVVIDDEC_CONFIG_BITS_SP_ARGB32 As Integer = (1 << 1)
+        Public Const NVVIDDEC_CONFIG_BITS_SP_AYUV As Integer = (1 << 2)
+
+        <Flags()> _
+        Public Enum ENvidiaVideoDecoderProps_ConfigTypes
+            NVVIDDEC_CONFIG_DISABLE_DROP_FRAMES = 0
+            NVVIDDEC_CONFIG_NULL_TIMESTAMPS
+            NVVIDDEC_CONFIG_DISPLAY_DECODE_ORDER
+            NVVIDDEC_CONFIG_SKIP_VIDEO_DECODE
+            NVVIDDEC_CONFIG_SKIP_SPU_DECODE
+            NVVIDDEC_CONFIG_SKIP_HIGHLIGHT_DECODE
+            NVVIDDEC_CONFIG_DISABLE_MMX
+            NVVIDDEC_CONFIG_DISABLE_LINE21
+            NVVIDDEC_CONFIG_ENABLE_VMR
+            NVVIDDEC_CONFIG_ENABLE_PROP_PAGE
+            NVVIDDEC_CONFIG_DISABLE_TRAY_ICON
+            NVVIDDEC_CONFIG_ENABLE_LOGO
+            NVVIDDEC_CONFIG_VIDEO_MODE
+            NVVIDDEC_CONFIG_DEINTERLACE_CONTROL
+            NVVIDDEC_CONFIG_DEINTERLACE_MODE
+            NVVIDDEC_CONFIG_SYNCHRONOUS_DELIVERY
+            NVVIDDEC_CONFIG_SKIP_DISPLAY
+            NVVIDDEC_CONFIG_SKIP_DXVA_VIDEO_EXECUTE
+            NVVIDDEC_CONFIG_ALLOW_DXVA_RECONNECT
+            NVVIDDEC_CONFIG_QUALITY
+            NVVIDDEC_CONFIG_Y_OFFSET
+            NVVIDDEC_CONFIG_U_OFFSET
+            NVVIDDEC_CONFIG_V_OFFSET
+            NVVIDDEC_CONFIG_DISPLAY_TYPE
+            NVVIDDEC_CONFIG_SPAD_MODE
+            NVVIDDEC_CONFIG_SUBPICTURE_FORMATS
+            NVVIDDEC_CONFIG_SUBPICTURE_BLEND_RECT
+            NVVIDDEC_CONFIG_FORCE_1088_CONNECTION
+            NVVIDDEC_CONFIG_DISABLE_VMR_DEINTERLACE
+            NVVIDDEC_CONFIG_ENABLE_GRAPH_SPY
+            NVVIDDEC_CONFIG_ENABLE_DXVA
+            NVVIDDEC_CONFIG_ENABLE_DXVA_NV17
+            NVVIDDEC_CONFIG_DXVA_IDCT
+            NVVIDDEC_CONFIG_DXVA_IDCT_FORMAT
+            NVVIDDEC_CONFIG_DXVA_MOCOMP_SIZE
+            NVVIDDEC_CONFIG_DXVA_OVERFLOW
+            NVVIDDEC_CONFIG_DXVA_INTRA_FORMAT
+            NVVIDDEC_CONFIG_DXVA_CHROMINANCE
+            NVVIDDEC_CONFIG_DXVA_CLIPPING
+            NVVIDDEC_CONFIG_DXVA_MBLOCK_ORDER
+            NVVIDDEC_CONFIG_DXVA_INVERSE_SCAN
+            NVVIDDEC_CONFIG_DXVA_SP_FORMAT
+            NVVIDDEC_CONFIG_DXVA_SP_BLEND
+            NVVIDDEC_CONFIG_VMR_DEINTERLACE_TECHNOLOGY
+            NVVIDDEC_CONFIG_ALLOW_3_BLEND_BUFFERS
+            NVVIDDEC_CONFIG_BRIGHTNESS
+            NVVIDDEC_CONFIG_CONTRT
+            NVVIDDEC_CONFIG_HUE
+            NVVIDDEC_CONFIG_SATURATION
+            NVVIDDEC_CONFIG_GAMMA
+            NVVIDDEC_CONFIG_DISABLE_SUBPICTURE_OUTPUTPIN
+            NVVIDDEC_CONFIG_FORCE_PAL_CONNECTION
+            NVVIDDEC_CONFIG_CONNECT_TO_VPP_ONLY
+            NVVIDDEC_CONFIG_DISABLE_DRIVER_PROCAMP
+            NVVIDDEC_CONFIG_DISABLE_DRIVER_GAMMA
+            NVVIDDEC_CONFIG_MARK_VPP_FRAMES
+            NVVIDDEC_CONFIG_FRAME_DROP_HYSTERESIS_BAND
+            NVVIDDEC_CONFIG_OVERSCAN_CORRECTION_1080
+            NVVIDDEC_CONFIG_OVERSCAN_CORRECTION_720
+            NVVIDDEC_CONFIG_OVERSCAN_CORRECTION_576
+            NVVIDDEC_CONFIG_OVERSCAN_CORRECTION_480
+            NVVIDDEC_CONFIG_DISABLE_DRIVER_INV32
+            NVVIDDEC_CONFIG_DISABLE_IQUALITYCONTROL
+            NVVIDDEC_CONFIG_FORCE_TRAY_ICON
+            NVVIDDEC_CONFIG_OVERRIDE_NUM_DXVA_UNCOMPRESSED
+            NVVIDDEC_CONFIG_DXVA_MIN_UNCOMPRESSED
+            NVVIDDEC_CONFIG_DXVA_MAX_UNCOMPRESSED
+            NVVIDDEC_CONFIG_DISABLE_DRIVER_DEBLOCK
+            NVVIDDEC_CONFIG_DVD_REGION
+            NVVIDDEC_CONFIG_SET_DEBLOCK_FILTER_STRENGTH
+            NVVIDDEC_CONFIG_VMR_SPBLEND_MINMEM
+            NVVIDDEC_CONFIG_FORCE_YUV_MIXING
+            NVVIDDEC_CONFIG_DISABLE_DECODER_COLOR_CONTROLS
+            NVVIDDEC_CONFIG_DISABLE_ARMODE_SETS
+            NVVIDDEC_CONFIG_DISABLE_VMR_DEINTERLACE_SETS
+            NVVIDDEC_CONFIG_DISABLE_VMR9_OUTOFORDER_BUGFIX
+            NVVIDDEC_CONFIG_FORCE_CONNECTION_MODE
+            NVVIDDEC_CONFIG_PREFER_YV12
+            NVVIDDEC_CONFIG_PUREVIDEO_EDGE_ENHANCE
+            NVVIDDEC_CONFIG_PUREVIDEO_NOISE_REDUCTION
+            NVVIDDEC_CONFIG_PUREVIDEO_OVERDRIVE
+            NVVIDDEC_CONFIG_PUREVIDEO_PROPPAGE
+            NVVIDDEC_CONFIG_SET_GOPTC_AS_MEDIA_TIME
+            NVVIDDEC_CONFIG_LT
+        End Enum
+
+        Public Const NVVIDDEC_EVENT_REBUILD_GRAPH As Integer = 100
+
+        <Flags()> _
+        Public Enum ENvidiaVideoDecoderProps_ControlTypes
+            NVVIDDEC_CONTROL_RENDERER_IFILTER_PTR = 0
+            NVVIDDEC_CONTROL_RENDERER_IPIN_PTR
+            NVVIDDEC_CONTROL_SEND_USER_EVENT
+            NVVIDDEC_CONTROL_CONNECT_TO_KNOWN_RENDERERS_ONLY
+            NVVIDDEC_CONTROL_TV_POS
+            NVVIDDEC_CONTROL_DISABLE_ARMODE_SETS
+            NVVIDDEC_CONTROL_DISABLE_DECODER_COLOR_CONTROLS
+            NVVIDDEC_CONTROL_DISABLE_VMR_DEINTERLACE_SETS
+            NVVIDDEC_CONTROL_FORCE_CONNECTION_MODE
+            NVVIDDEC_CONTROL_SET_GOPTC_AS_MEDIA_TIME
+            NVVIDDEC_CONTROL_LT
+        End Enum
+
+#End Region 'Video Decoder Control
+
+#Region "Audio Decoder Control"
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_FailureCodes
+            NVAUDDEC_OK = 0
+            NVAUDDEC_NOT_SUPPORTED = 1
+            NVAUDDEC_NOT_CONNECTED = 2
+        End Enum
+
+        Public Const NVAUDDEC_AC3_FLOAT2INT_SCALE As Double = 10000
+
+        <Flags()> _
+        Public Enum EINvidiaAudioDecoderProps
+            NVAUDDEC_STATS = 0
+            NVAUDDEC_DEBUG
+            NVAUDDEC_CONFIG
+            NVAUDDEC_CONTROL
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_Stats
+            NVAUDDEC_STATS_IN_TYPE = 0
+            NVAUDDEC_STATS_IN_BITS
+            NVAUDDEC_STATS_IN_RATE
+            NVAUDDEC_STATS_IN_CHANNELS
+            NVAUDDEC_STATS_IN_CHANNELS_STREAM
+            NVAUDDEC_STATS_IN_FRAMES
+            NVAUDDEC_STATS_IN_FRAME_SIZE
+            NVAUDDEC_STATS_OUT_TYPE
+            NVAUDDEC_STATS_OUT_BITS
+            NVAUDDEC_STATS_OUT_RATE
+            NVAUDDEC_STATS_OUT_FRAMES
+            NVAUDDEC_STATS_OUT_FRAME_SIZE
+            NVAUDDEC_STATS_OUT_CHANNELS
+            NVAUDDEC_STATS_ENCRYPTED
+            NVAUDDEC_STATS_BITRATE
+            NVAUDDEC_STATS_AC3_FRAME_SIZE_ERROR
+            NVAUDDEC_STATS_PCM_SAMPLES
+            NVAUDDEC_STATS_PCM_ERRORS
+            NVAUDDEC_STATS_1BIT_ERROR
+            NVAUDDEC_STATS_2BIT_ERROR
+            NVAUDDEC_STATS_3BIT_ERROR
+            NVAUDDEC_STATS_4BIT_ERROR
+            NVAUDDEC_STATS_5BIT_ERROR
+            NVAUDDEC_STATS_6BIT_ERROR
+            NVAUDDEC_STATS_7BIT_ERROR
+            NVAUDDEC_STATS_8BIT_ERROR
+            NVAUDDEC_STATS_9BIT_ERROR
+            NVAUDDEC_STATS_10BIT_ERROR
+            NVAUDDEC_STATS_11BIT_ERROR
+            NVAUDDEC_STATS_12BIT_ERROR
+            NVAUDDEC_STATS_13BIT_ERROR
+            NVAUDDEC_STATS_14BIT_ERROR
+            NVAUDDEC_STATS_15BIT_ERROR
+            NVAUDDEC_STATS_16BIT_ERROR
+            NVAUDDEC_STATS_AC3_BSINFO_ERROR
+            NVAUDDEC_STATS_AC3_BSINFO_VALID
+            NVAUDDEC_STATS_AC3_BSID
+            NVAUDDEC_STATS_AC3_BSMOD
+            NVAUDDEC_STATS_AC3_CMIXLEV
+            NVAUDDEC_STATS_AC3_SURMIXLEV
+            NVAUDDEC_STATS_AC3_DSURMOD
+            NVAUDDEC_STATS_AC3_DIALNORM
+            NVAUDDEC_STATS_AC3_LANGCOD
+            NVAUDDEC_STATS_AC3_LFEON
+            NVAUDDEC_STATS_AC3_AUDPRODIE
+            NVAUDDEC_STATS_AC3_MIXLEV
+            NVAUDDEC_STATS_AC3_ROOMTYP
+            NVAUDDEC_STATS_AC3_COPYRIGHTB
+            NVAUDDEC_STATS_AC3_ORIGBS
+            NVAUDDEC_STATS_AC3_ACMOD
+            NVAUDDEC_STATS_AC3_DIALNORM2
+            NVAUDDEC_STATS_AC3_LANGCOD2
+            NVAUDDEC_STATS_AC3_AUDPRODIE2
+            NVAUDDEC_STATS_AC3_ROOMTYP2
+            NVAUDDEC_STATS_AC3_MIXLEV2
+            NVAUDDEC_STATS_AC3_TIMECOD1E
+            NVAUDDEC_STATS_AC3_TIMECOD1
+            NVAUDDEC_STATS_AC3_TIMECOD2E
+            NVAUDDEC_STATS_AC3_TIMECOD2
+            NVAUDDEC_STATS_AC3_XBSI1E
+            NVAUDDEC_STATS_AC3_DMIXMOD
+            NVAUDDEC_STATS_AC3_LTRTCMIXLEV
+            NVAUDDEC_STATS_AC3_LTRTSURMIXLEV
+            NVAUDDEC_STATS_AC3_LOROCMIXLEV
+            NVAUDDEC_STATS_AC3_LOROSURMIXLEV
+            NVAUDDEC_STATS_AC3_XBSI2E
+            NVAUDDEC_STATS_AC3_DSUREXMOD
+            NVAUDDEC_STATS_AC3_DHEADPHONMOD
+            NVAUDDEC_STATS_AC3_ADCONVTYP
+            NVAUDDEC_STATS_AC3_XBSI2
+            NVAUDDEC_STATS_AC3_ENCINFO
+            NVAUDDEC_STATS_IN_AUDIO_DECODE
+            NVAUDDEC_STATS_AVAILABLE_OUTPUT_FORMATS
+            NVAUDDEC_STATS_LANGUAGE_MODULE
+            NVAUDDEC_STATS_PROLOGIC_ACTIVE
+            NVAUDDEC_STATS_PRODUCT_OPTIONS
+            NVAUDDEC_STATS_KARAOKE_ENABLED
+            NVAUDDEC_STATS_NUM_TITLENAMES
+            NVAUDDEC_STATS_BM_DOWNMIX_MODE
+            NVAUDDEC_STATS_SYSTEM_SPEAKER_CONFIG
+            NVAUDDEC_STATS_PLAYBACK_RATE
+            NVAUDDEC_STATS_USING_PROLOGIC2
+            NVAUDDEC_STATS_DHP_ACTIVE
+            NVAUDDEC_STATS_17BIT_ERROR
+            NVAUDDEC_STATS_18BIT_ERROR
+            NVAUDDEC_STATS_19BIT_ERROR
+            NVAUDDEC_STATS_20BIT_ERROR
+            NVAUDDEC_STATS_21BIT_ERROR
+            NVAUDDEC_STATS_22BIT_ERROR
+            NVAUDDEC_STATS_23BIT_ERROR
+            NVAUDDEC_STATS_24BIT_ERROR
+            NVAUDDEC_STATS_IN_BITRATE
+            NVAUDDEC_STATS_LT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_GetBuffer
+            NVAUDDEC_BUFFER_TITLE_NAMES = 0
+            NVAUDDEC_BUFFER_CAPTURE_FILENAME
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_DebugTypeIndexes
+            NVAUDDEC_DEBUG_TIMING = 0
+            NVAUDDEC_DEBUG_TRACE
+            NVAUDDEC_DEBUG_MEMORY
+            NVAUDDEC_DEBUG_LOCKING
+            NVAUDDEC_DEBUG_ERROR
+            NVAUDDEC_DEBUG_CUSTOM1
+            NVAUDDEC_DEBUG_CUSTOM2
+            NVAUDDEC_DEBUG_CUSTOM3
+            NVAUDDEC_DEBUG_AUDDEC
+            NVAUDDEC_DEBUG_AC3ADEC
+            NVAUDDEC_DEBUG_MPGADEC
+            NVAUDDEC_DEBUG_PCMADEC
+            NVAUDDEC_DEBUG_DTSADEC
+            NVAUDDEC_DEBUG_DHPAENC
+            NVAUDDEC_DEBUG_DPLADEC
+            NVAUDDEC_DEBUG_AUDIOFX
+            NVAUDDEC_DEBUG_CALER
+            NVAUDDEC_DEBUG_LT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENVAUDDEC_STATS_AVAILABLE_OUTPUT_FORMATS
+            NVAUDDEC_SPDIF_44KHZ_FORMAT = 0
+            NVAUDDEC_SPDIF_48KHZ_FORMAT
+            NVAUDDEC_16BIT_32KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_16BIT_32KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_16BIT_32KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_16BIT_44KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_16BIT_44KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_16BIT_44KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_16BIT_48KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_16BIT_48KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_16BIT_48KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_24BIT_44KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_24BIT_44KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_24BIT_44KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_24BIT_48KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_24BIT_48KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_24BIT_48KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_24BIT_96KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_24BIT_96KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_24BIT_96KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_16BIT_22KHZ_2CHANNEL_FORMAT
+            NVAUDDEC_16BIT_22KHZ_4CHANNEL_FORMAT
+            NVAUDDEC_16BIT_22KHZ_6CHANNEL_FORMAT
+            NVAUDDEC_LT_FORMAT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_Config
+            NVAUDDEC_CONFIG_SKIP_AUDIO_DECODE = 0
+            NVAUDDEC_CONFIG_SKIP_AUDIO_DELIVER
+            NVAUDDEC_CONFIG_MAX_OUT_CHANNELS
+            NVAUDDEC_CONFIG_ENABLE_PROP_PAGE
+            NVAUDDEC_CONFIG_AC3_COMPARE
+            NVAUDDEC_CONFIG_AC3_DECODER
+            NVAUDDEC_CONFIG_AC3_REFERENCE
+            NVAUDDEC_CONFIG_AC3_REPEAT_CPL_UNPACK
+            NVAUDDEC_CONFIG_AC3_DISABLE_SIMD_FFT
+            NVAUDDEC_CONFIG_AC3_DISABLE_SIMD_DENORM_MANTS
+            NVAUDDEC_CONFIG_AC3_DISABLE_SIMD_WINDOW
+            NVAUDDEC_CONFIG_AC3_DISABLE_SIMD_DOWNMIX
+            NVAUDDEC_CONFIG_AC3_DISABLE_FT_16B_2CH
+            NVAUDDEC_CONFIG_AC3_DISABLE_FT_DELAY_BUF
+            NVAUDDEC_CONFIG_AC3_LEFT_OUTPUT
+            NVAUDDEC_CONFIG_AC3_CENTER_OUTPUT
+            NVAUDDEC_CONFIG_AC3_RIGHT_OUTPUT
+            NVAUDDEC_CONFIG_AC3_RIGHTSUR_OUTPUT
+            NVAUDDEC_CONFIG_AC3_LEFTSUR_OUTPUT
+            NVAUDDEC_CONFIG_AC3_LFE_OUTPUT
+            NVAUDDEC_CONFIG_AC3_OUTPUT_MODE
+            NVAUDDEC_CONFIG_AC3_DYNRANGE_LOW
+            NVAUDDEC_CONFIG_AC3_DYNRANGE_HIGH
+            NVAUDDEC_CONFIG_AC3_PCM_SCALEFACTOR
+            NVAUDDEC_CONFIG_AC3_LFE_ON
+            NVAUDDEC_CONFIG_AC3_COMPRESSION_MODE
+            NVAUDDEC_CONFIG_AC3_DUALMONO_MODE
+            NVAUDDEC_CONFIG_AC3_OUTPUT_DIFFS
+            NVAUDDEC_CONFIG_AC3_DIFF_SHIFT
+            NVAUDDEC_CONFIG_AC3_REPEAT_BLK_MAX
+            NVAUDDEC_CONFIG_AC3_AUTO_SELECT_2CHANNEL_MODE
+            NVAUDDEC_CONFIG_ENABLE_SPDIF_PASSTHRU
+            NVAUDDEC_CONFIG_DOLBY_HEADPHONE_MODE
+            NVAUDDEC_CONFIG_MONO_OUTPUT
+            NVAUDDEC_CONFIG_USE_SYSTEM_SPEAKER_CONFIG
+            NVAUDDEC_CONFIG_DHP_COMPARE
+            NVAUDDEC_CONFIG_DHP_ENCODER
+            NVAUDDEC_CONFIG_PROLOGIC_MODE
+            NVAUDDEC_CONFIG_PROLOGIC_COMPARE
+            NVAUDDEC_CONFIG_PROLOGIC_DECODER
+            NVAUDDEC_CONFIG_SURROUND_DELAY
+            NVAUDDEC_CONFIG_DPL_WIDE_SURROUND
+            NVAUDDEC_CONFIG_DPL_AUTOBALANCE_DISABLE
+            NVAUDDEC_CONFIG_CAPTURING_AUDIO
+            NVAUDDEC_CONFIG_OUTPUT_PINK_NOISE
+            NVAUDDEC_CONFIG_CAPTURE_FILENAME_PTR
+            NVAUDDEC_CONFIG_KARAOKE_V1_LEVEL
+            NVAUDDEC_CONFIG_KARAOKE_V1_PAN
+            NVAUDDEC_CONFIG_KARAOKE_V2_LEVEL
+            NVAUDDEC_CONFIG_KARAOKE_V2_PAN
+            NVAUDDEC_CONFIG_KARAOKE_M_LEVEL
+            NVAUDDEC_CONFIG_KARAOKE_M_PAN
+            NVAUDDEC_CONFIG_ISOLATE_IN_LEFT
+            NVAUDDEC_CONFIG_ISOLATE_IN_RIGHT
+            NVAUDDEC_CONFIG_CENTER_DELAY
+            NVAUDDEC_CONFIG_ENABLE_AUDIO_CALIBRATE
+            NVAUDDEC_CONFIG_ENABLE_KARAOKE
+            NVAUDDEC_CONFIG_LEFT_TRIM
+            NVAUDDEC_CONFIG_RIGHT_TRIM
+            NVAUDDEC_CONFIG_CENTER_TRIM
+            NVAUDDEC_CONFIG_SW_TRIM
+            NVAUDDEC_CONFIG_LSUR_TRIM
+            NVAUDDEC_CONFIG_RSUR_TRIM
+            NVAUDDEC_CONFIG_NOISE_TARGET
+            NVAUDDEC_CONFIG_ENABLE_SPDIF_CHECK
+            NVAUDDEC_CONFIG_MICROPHONE_LEVEL
+            NVAUDDEC_CONFIG_MICROPHONE_MUTE
+            NVAUDDEC_CONFIG_MICROPHONE_BOOST
+            NVAUDDEC_CONFIG_CALIBRATING
+            NVAUDDEC_CONFIG_ENABLE_BS_MANAGEMENT
+            NVAUDDEC_CONFIG_FRONT_SPEAKER_SIZE
+            NVAUDDEC_CONFIG_CENTER_SPEAKER_SIZE
+            NVAUDDEC_CONFIG_REAR_SPEAKER_SIZE
+            NVAUDDEC_CONFIG_SUBWOOFER_PRESENT
+            NVAUDDEC_CONFIG_LFE_TRIM
+            NVAUDDEC_CONFIG_CROSSOVER_FREQUENCY
+            NVAUDDEC_CONFIG_VCD_KAROAKE_MODE
+            NVAUDDEC_CONFIG_ENABLE_SCALING
+            NVAUDDEC_CONFIG_SCALE_FACTOR
+            NVAUDDEC_CONFIG_SIZE_FACTOR
+            NVAUDDEC_CONFIG_FREQ_FACTOR
+            NVAUDDEC_CONFIG_HIGHPSMUTE
+            NVAUDDEC_CONFIG_LOWPSMUTE
+            NVAUDDEC_CONFIG_HIGHSPLIT
+            NVAUDDEC_CONFIG_MTER_VOLUME
+            NVAUDDEC_CONFIG_ADJUST_VOLUME_VIA_DECODER
+            NVAUDDEC_CONFIG_CONNECTED_DEVICE_PROP_CONTROL
+            NVAUDDEC_CONFIG_SPDIF_PROP_CONTROL
+            NVAUDDEC_CONFIG_SURROUND_PROP_CONTROL
+            NVAUDDEC_CONFIG_MONO_PROP_CONTROL
+            NVAUDDEC_CONFIG_DHP_PROP_CONTROL
+            NVAUDDEC_CONFIG_ENABLE_PITCH_CORRECTION
+            NVAUDDEC_CONFIG_PROLOGIC2_MODE
+            NVAUDDEC_CONFIG_PROLOGIC2_DIMENSION
+            NVAUDDEC_CONFIG_PROLOGIC2_CENTER_WIDTH
+            NVAUDDEC_CONFIG_PROLOGIC2_PANORAMA_ENABLED
+            NVAUDDEC_CONFIG_MUTE
+            NVAUDDEC_CONFIG_DISABLE_PROLOGIC2
+            NVAUDDEC_CONFIG_CENTER_PRESENT
+            NVAUDDEC_CONFIG_BACK_PRESENT
+            NVAUDDEC_CONFIG_OUTPUT_FILTER_TYPE
+            NVAUDDEC_CONFIG_MPG_DISABLE_SSE
+            NVAUDDEC_CONFIG_ACCEPT_RAW_PCM_INPUT
+            NVAUDDEC_CONFIG_SIMULATE_KARAOKE
+            NVAUDDEC_CONFIG_USE_DTS_REFERENCE
+            NVAUDDEC_CONFIG_COMPARE_DTS
+            NVAUDDEC_CONFIG_ENABLE_DTS_REFERENCE
+            NVAUDDEC_CONFIG_TIMESTAMP_SKEW
+            NVAUDDEC_CONFIG_ENABLE_24BIT
+            NVAUDDEC_CONFIG_DUMP_OUTPUT
+            NVAUDDEC_CONFIG_ENABLE_DTSPCM_PSTHRU
+            NVAUDDEC_CONFIG_LT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_Control
+            NVAUDDEC_CONTROL_ACCEPT_RAW_PCM_INPUT
+            NVAUDDEC_CONTROL_LT
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_FilterPs
+            NVAUDDEC_NO_FILTER
+            NVAUDDEC_LOW_PS_FILTER
+            NVAUDDEC_HIGH_PS_FILTER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_OutputTo
+            NVAUDDEC_SPEAKERS
+            NVAUDDEC_HEADPHONES
+            NVAUDDEC_RECEIVER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_SpeakerSize
+            NVAUDDEC_LARGE_SPEAKER
+            NVAUDDEC_SMALL_SPEAKER
+            NVAUDDEC_NO_SPEAKER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_VCDKarakoeModes
+            NVAUDDEC_VCD_KARAOKE_BOTH
+            NVAUDDEC_VCD_KARAOKE_LEFT_ONLY
+            NVAUDDEC_VCD_KARAOKE_RIGHT_ONLY
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_Isolate
+            NVAUDDEC_ISOLATE_NONE
+            NVAUDDEC_ISOLATE_LEFT
+            NVAUDDEC_ISOLATE_RIGHT
+            NVAUDDEC_ISOLATE_CENTER
+            NVAUDDEC_ISOLATE_LFE
+            NVAUDDEC_ISOLATE_LEFT_SUR
+            NVAUDDEC_ISOLATE_RIGHT_SUR
+            NVAUDDEC_LT_ISOLATE
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_ProLogic
+            NVAUDDEC_PROLOGIC_OFF
+            NVAUDDEC_PROLOGIC_ON
+            NVAUDDEC_PROLOGIC_AUTO
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_ProLogic2
+            NVAUDDEC_PROLOGIC2_OFF
+            NVAUDDEC_PROLOGIC2_PROLOGIC_EMULATION
+            NVAUDDEC_PROLOGIC2_VIRTUAL_COMPATIBLE
+            NVAUDDEC_PROLOGIC2_MUSIC
+            NVAUDDEC_PROLOGIC2_MOVIE
+            NVAUDDEC_PROLOGIC2_MATRIX
+            NVAUDDEC_PROLOGIC2_CUSTOM
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_ProLogic2Dimension
+            NVAUDDEC_PROLOGIC2_DIM_P3
+            NVAUDDEC_PROLOGIC2_DIM_P2
+            NVAUDDEC_PROLOGIC2_DIM_P1
+            NVAUDDEC_PROLOGIC2_DIM_0
+            NVAUDDEC_PROLOGIC2_DIM_M1
+            NVAUDDEC_PROLOGIC2_DIM_M2
+            NVAUDDEC_PROLOGIC2_DIM_M3
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_DolbyHeadphoneModes
+            NVAUDDEC_DOLBYHEADPHONE_OFF
+            NVAUDDEC_DOLBYHEADPHONE_ROOM1
+            NVAUDDEC_DOLBYHEADPHONE_ROOM2
+            NVAUDDEC_DOLBYHEADPHONE_ROOM3
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_AC3Modes
+            NVAUDDEC_AC3_AUDIO_MODE11 = 0
+            NVAUDDEC_AC3_AUDIO_MODE10
+            NVAUDDEC_AC3_AUDIO_MODE20
+            NVAUDDEC_AC3_AUDIO_MODE30
+            NVAUDDEC_AC3_AUDIO_MODE21
+            NVAUDDEC_AC3_AUDIO_MODE31
+            NVAUDDEC_AC3_AUDIO_MODE22
+            NVAUDDEC_AC3_AUDIO_MODE32
+            NVAUDDEC_LT_AC3_AUDIO_MODE
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_SpeakerSetupsForBsManagement
+            NVAUDDEC_LLL1 = 1
+            NVAUDDEC_LLL0
+            NVAUDDEC_LLS1
+            NVAUDDEC_LLS0
+            NVAUDDEC_LL01
+            NVAUDDEC_LL00
+            NVAUDDEC_LSL1
+            NVAUDDEC_LSL0
+            NVAUDDEC_LSS1
+            NVAUDDEC_LSS0
+            NVAUDDEC_LS01
+            NVAUDDEC_LS00
+            NVAUDDEC_L0L1
+            NVAUDDEC_L0L0
+            NVAUDDEC_L0S1
+            NVAUDDEC_L0S0
+            NVAUDDEC_L001
+            NVAUDDEC_L000
+            NVAUDDEC_SLL1
+            NVAUDDEC_SLL0
+            NVAUDDEC_SLS1
+            NVAUDDEC_SLS0
+            NVAUDDEC_SL01
+            NVAUDDEC_SL00
+            NVAUDDEC_SSL1
+            NVAUDDEC_SSL0
+            NVAUDDEC_SSS1
+            NVAUDDEC_SSS0
+            NVAUDDEC_SS01
+            NVAUDDEC_SS00
+            NVAUDDEC_S0L1
+            NVAUDDEC_S0L0
+            NVAUDDEC_S0S1
+            NVAUDDEC_S0S0
+            NVAUDDEC_S001
+            NVAUDDEC_S000
+            NVAUDDEC_NUM_SPEAKER_SETUPS
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_AC3Channels
+            NVAUDDEC_LEFT_CHANNEL = 0
+            NVAUDDEC_RIGHT_CHANNEL
+            NVAUDDEC_CENTER_CHANNEL
+            NVAUDDEC_LFE_CHANNEL
+            NVAUDDEC_BACK_LEFT_CHANNEL
+            NVAUDDEC_BACK_RIGHT_CHANNEL
+            NVAUDDEC_NO_CHANNEL
+            NVAUDDEC_LT_CHANNEL
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_AC3CompressionModes
+            NVAUDDEC_AC3_COMP_CUSTOM_A = 0
+            NVAUDDEC_AC3_COMP_CUSTOM_D
+            NVAUDDEC_AC3_COMP_LINE
+            NVAUDDEC_AC3_COMP_RF
+            NVAUDDEC_AC3_LT_COMP_MODE
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_AC3DualMonoModes
+            NVAUDDEC_AC3_DUAL_STEREO = 0
+            NVAUDDEC_AC3_DUAL_LEFTMONO
+            NVAUDDEC_AC3_DUAL_RGHTMONO
+            NVAUDDEC_AC3_DUAL_MIXMONO
+            NVAUDDEC_AC3_LT_DUALMONO_MODE
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_DHPEncoderImplementations
+            NVAUDDEC_NVIDIA_DHP_ENCODER
+            NVAUDDEC_DOLBY_DHP_ENCODER
+            NVAUDDEC_LAKE_DHP_ENCODER
+            NVAUDDEC_LT_DHP_ENCODER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_DHPDecoderImplementations
+            NVAUDDEC_NVIDIA_DPL_DECODER
+            NVAUDDEC_DOLBY_DPL_DECODER
+            NVAUDDEC_LT_DPL_DECODER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_AC3DecoderImplementations
+            NVAUDDEC_NVIDIA_AC3_DECODER
+            NVAUDDEC_DOLBY_AC3_DECODER
+            NVAUDDEC_LT_AC3_DECODER
+        End Enum
+
+        <Flags()> _
+        Public Enum ENvidiaAudioDecoderProps_AC3ReferenceImplementations
+            NVAUDDEC_DOLBY_AC3_REFERENCE
+            NVAUDDEC_LT_AC3_REFERENCE
+        End Enum
+
+#End Region 'Audio Decoder Control
+
+#Region "TRPF ADDED"
+
+        Public Enum eDSURMOD
+            NOT_INDICATED
+            Not_Surround_Encoded
+            Surround_Encoded
+            RESERVED
+        End Enum
+
+        Public Enum eDSUREXMOD
+            NOT_INDICATED
+            Not_EX_Encoded
+            EX_Encoded
+            RESERVED
+        End Enum
+
+#End Region 'TRPF ADDED
+
+    End Class
+
+End Namespace

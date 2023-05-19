@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="UI.WPF.StreamVizualization.StreamViz_UserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="836" Height="315">
+    <Grid x:Name="cvLayoutRoot">
+        <ScrollViewer x:Name="svMain" SnapsToDevicePixels="True" Canvas.Left="0" Canvas.Top="0" CanContentScroll="True" HorizontalContentAlignment="Left">
+            <Grid x:Name="cvStackPanelParent">
+                <StackPanel x:Name="spMain" Background="WhiteSmoke" />
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
